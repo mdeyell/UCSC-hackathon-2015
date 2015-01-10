@@ -1,15 +1,26 @@
+#include <aREST.h>
+
+// Create aREST instance
+aREST rest = aREST();
+
 void setup()                                 // Built-in initialization block
 {
   tone(4, 3000, 1000);                       // Play tone for 1 second
   delay(1000);                               // Delay to finish tone
 
 
- //for use with the room's light being on or off
+  //for use with the room's light being on or off
   pinMode(13,OUTPUT); //room 1
   pinMode(12,OUTPUT);//room2
 
   pinMode(10, INPUT);  
   pinMode(9, OUTPUT);   // Left IR LED & Receiver
+  
+  pinMode(3, INPUT);
+  pinMode(2, OUTPUT);
+
+  pinMode(7, OUTPUT);
+  pinMode(6, OUTPUT);
 
   Serial.begin(115200);                        // Set data rate to 115200 bps
 }  
@@ -34,46 +45,52 @@ int room1Count = 0;
 int room2Count = 0;
 int prevCount1 = 0;
 int prevCount2 = 0;
+int readIn = -1;
 
 void loop()                                  // Main loop auto-repeats
 {
+  rest.handle(Serial); 
+
   //universal override, ideally from the pebble watch  
-  if(room1Count>0)
-  {
-    digitalWrite(13,HIGH);
-  }
-  else
-  {
-    digitalWrite(13,LOW);
-  }
 
-  if (room2Count>0)
-  {
-    digitalWrite(12,HIGH);
+  if(digitalRead(7) == HIGH){
+    if(room1Count>0)
+    {
+      digitalWrite(13,HIGH);
+    }
+    else
+    {
+      digitalWrite(13,LOW);
+    }
   }
-  else
-  {
-    digitalWrite(12,LOW);
+  if(digitalRead(6) == HIGH){
+    if (room2Count>0)
+    {
+      digitalWrite(12,HIGH);
+    }
+    else
+    {
+      digitalWrite(12,LOW);
+    }
   }
-
 
 
 
 
   int irLeft = irDetect(9, 10, 38000);  
   int irRight = irDetect(2, 3, 38000);  // Check for object
-//  if(statey!=STATE)
-//  {
-//    Serial.print("Last: ");
-//    Serial.print(statey);
-//    Serial.print("        Current: ");
-//    Serial.println(STATE);
-//    statey=STATE;
-//  }
-    Serial.print("Room1: ");
-   Serial.print(room1Count);
-  Serial.print("  Room2: ");
-  Serial.println(room2Count);
+  //  if(statey!=STATE)
+  //  {
+  //    Serial.print("Last: ");
+  //    Serial.print(statey);
+  //    Serial.print("        Current: ");
+  //    Serial.println(STATE);
+  //    statey=STATE;
+  //  }
+  //    Serial.print("Room1: ");
+  //   Serial.print(room1Count);
+  //  Serial.print("  Room2: ");
+  //  Serial.println(room2Count);
 
 
   switch(STATE){
@@ -234,6 +251,16 @@ int irDetect(int irLedPin, int irReceiverPin, long frequency)
   delay(1);                                  // Down time before recheck
   return ir;                                 // Return 1 no detect, 0 detect
 }  
+
+// Custom function accessible by the API
+int ledControl(String command) {
+
+  // Get state from command
+  int state = command.toInt();
+
+  digitalWrite(6,state);
+  return 1;
+}
 
 
 
