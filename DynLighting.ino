@@ -84,9 +84,10 @@ void loop()                                  // Main loop auto-repeats
       digitalWrite(13,LOW);
     }
   }
-  else if((digitalRead(1) == HIGH) && (digitalRead(7) == LOW)){//room1 light on overide
-    analogWrite(13, lightInt1);
+  else{
+    analogWrite(13,lightInt1);
   }
+
   
   if(digitalRead(6) == HIGH){
     if (room2Count>0)
@@ -98,9 +99,10 @@ void loop()                                  // Main loop auto-repeats
       digitalWrite(12,LOW);
     }
   }
-  else if ((digitalRead(11) == HIGH) && (digitalRead(6) == LOW)){ //rrom 2 light on overide
-    analogWrite(12, lightInt2);
+  else{
+    analogWrite(12,lightInt2);
   }
+
 
 
 
