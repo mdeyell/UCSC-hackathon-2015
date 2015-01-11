@@ -15,7 +15,7 @@ void setup()                                 // Built-in initialization block
 
   pinMode(10, INPUT);  
   pinMode(9, OUTPUT);   // Left IR LED & Receiver
-  
+
   pinMode(3, INPUT);
   pinMode(2, OUTPUT);
 
@@ -23,6 +23,8 @@ void setup()                                 // Built-in initialization block
   pinMode(6, OUTPUT);
 
   Serial.begin(115200);                        // Set data rate to 115200 bps
+  rest.set_id("001");
+  rest.set_name("light");
 }  
 
 enum state{
@@ -49,9 +51,12 @@ int readIn = -1;
 
 void loop()                                  // Main loop auto-repeats
 {
+
+
+  // rest.handle("/digital/7/1");
   rest.handle(Serial); 
 
-  //universal override, ideally from the pebble watch  
+
 
   if(digitalRead(7) == HIGH){
     if(room1Count>0)
@@ -261,9 +266,4 @@ int ledControl(String command) {
   digitalWrite(6,state);
   return 1;
 }
-
-
-
-
-
 
