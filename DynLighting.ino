@@ -15,16 +15,20 @@ void setup()                                 // Built-in initialization block
 
   pinMode(10, INPUT);  
   pinMode(9, OUTPUT);   // Left IR LED & Receiver
-
+  
   pinMode(3, INPUT);
   pinMode(2, OUTPUT);
+  
+  pinMode(4, OUTPUT);//for room 1
+  pinMode(A4, INPUT);
+  
+  pinMode(5, OUTPUT);//for room 2
+  pinMode(A2, INPUT);
 
   pinMode(7, OUTPUT);
   pinMode(6, OUTPUT);
 
   Serial.begin(115200);                        // Set data rate to 115200 bps
-  rest.set_id("001");
-  rest.set_name("light");
 }  
 
 enum state{
@@ -48,20 +52,30 @@ int room2Count = 0;
 int prevCount1 = 0;
 int prevCount2 = 0;
 int readIn = -1;
+int lightInt1 = 0;
+int lightInt2 = 0;
 
 void loop()                                  // Main loop auto-repeats
 {
+  
+ // rest.handle("/digital/7/1");
+ rest.handle(Serial);
+ 
+ //reading analog signal for room 1 
+ lightInt1 = analogRead(A4);
+ lightInt1 = lightInt1 >> 2; 
+//analogWrite(13, lightInt1);
 
-
-  // rest.handle("/digital/7/1");
-  rest.handle(Serial); 
-
+ //reading analog signal for room 2
+ lightInt2 = analogRead(A2);
+ lightInt2 = lightInt2 >> 2; 
+// analogWrite(12, lightInt2);
 
 
   if(digitalRead(7) == HIGH){
     if(room1Count>0)
     {
-      digitalWrite(13,HIGH);
+      analogWrite(13, lightInt1);
     }
     else
     {
@@ -71,7 +85,7 @@ void loop()                                  // Main loop auto-repeats
   if(digitalRead(6) == HIGH){
     if (room2Count>0)
     {
-      digitalWrite(12,HIGH);
+      analogWrite(12, lightInt2);
     }
     else
     {
@@ -266,4 +280,9 @@ int ledControl(String command) {
   digitalWrite(6,state);
   return 1;
 }
+
+
+
+
+
 
