@@ -15,15 +15,9 @@ void setup()                                 // Built-in initialization block
 
   pinMode(10, INPUT);  
   pinMode(9, OUTPUT);   // Left IR LED & Receiver
-  
+
   pinMode(3, INPUT);
   pinMode(2, OUTPUT);
-  
-  pinMode(4, OUTPUT);//for room 1
-  pinMode(A4, INPUT);
-  
-  pinMode(5, OUTPUT);//for room 2
-  pinMode(A2, INPUT);
 
   pinMode(7, OUTPUT);
   pinMode(6, OUTPUT);
@@ -54,52 +48,35 @@ int room2Count = 0;
 int prevCount1 = 0;
 int prevCount2 = 0;
 int readIn = -1;
-int lightInt1 = 0;
-int lightInt2 = 0;
 
 void loop()                                  // Main loop auto-repeats
 {
-  
- // rest.handle("/digital/7/1");
- rest.handle(Serial);
- 
- //reading analog signal for room 1 
- lightInt1 = analogRead(A4);
- lightInt1 = lightInt1 >> 2; 
-//analogWrite(13, lightInt1);
 
- //reading analog signal for room 2
- lightInt2 = analogRead(A2);
- lightInt2 = lightInt2 >> 2; 
-// analogWrite(12, lightInt2);
 
-/*##### LIGHT LOGIC #####*/
+  // rest.handle("/digital/7/1");
+  rest.handle(Serial); 
+
+
+
   if(digitalRead(7) == HIGH){
     if(room1Count>0)
     {
-      analogWrite(13, lightInt1);
+      digitalWrite(13,HIGH);
     }
     else
     {
       digitalWrite(13,LOW);
     }
   }
-  else if((digitalRead(1) == HIGH) && (digitalRead(7) == LOW)){//room1 light on overide
-    analogWrite(13, lightInt1);
-  }
-  
   if(digitalRead(6) == HIGH){
     if (room2Count>0)
     {
-      analogWrite(12, lightInt2);
+      digitalWrite(12,HIGH);
     }
     else
     {
       digitalWrite(12,LOW);
     }
-  }
-  else if ((digitalRead(11) == HIGH) && (digitalRead(6) == LOW)){ //rrom 2 light on overide
-    analogWrite(12, lightInt2);
   }
 
 
@@ -289,9 +266,4 @@ int ledControl(String command) {
   digitalWrite(6,state);
   return 1;
 }
-
-
-
-
-
 
