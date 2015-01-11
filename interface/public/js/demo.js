@@ -36,16 +36,24 @@ $(document).ready(function() {
       $.get('/light/digital/6/1');
     });
   });
-  
-  
-  // Function to control motor speed
-  $("#motorspeed").mouseup(function(){
-
+    
+  // Function to control room 1 intensity
+  $("#intensity1").mouseup(function(){
     // Get speed
-    speed = $("#motorspeed").val(); 
+    speed = $("#intensity1").val(); 
     
     // Send command
-    $.get("/motor_control/analog/6/" + speed);  
+    $.get("/light/analog/3/" + speed);  
+
+  });
+  
+    // Function to control room 2 intensity
+  $("#intensity2").mouseup(function(){
+    // Get speed
+    speed = $("#intensity2").val(); 
+    
+    // Send command
+    $.get("/light/analog/4/" + speed);  
 
   });
 

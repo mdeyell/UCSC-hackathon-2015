@@ -1,14 +1,16 @@
-input[type='range'] {
+input[type='range'] {/*bar*/
     margin-top: 16px;
     -webkit-appearance: none !important;
     background:gray;
     height:10px;
 }
-input[type='range']::-webkit-slider-thumb {
+input[type='range']::{/*slider*/
     -webkit-appearance: none !important;
     background: black;
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
 }
 
 .voffset { margin-top: 30px; }
+
+.vsmallset{ margin-top: 5px; }
